@@ -1,0 +1,30 @@
+{
+  "name": "timer-app",
+  "version": "1.0.0",
+  "description": "This README would normally document whatever steps are necessary to get your application up and running.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://Madhaneeswaran_P@bitbucket.org/madhaneeswaran_p/timer-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://bitbucket.org/madhaneeswaran_p/timer-app/issues"
+  },
+  "homepage": "https://bitbucket.org/madhaneeswaran_p/timer-app#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.3",
+    "method-override": "^3.0.0",
+    "nodemon": "^2.0.19",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0"
+  }
+}
