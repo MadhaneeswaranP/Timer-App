@@ -1,20 +1,19 @@
-<h1>Register</h1>
+<link href="/styles.css" rel="stylesheet" type="text/css">
 
-<form action="/register" method="POST">
-    <div>
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" required>
-    </div>
-    <div>
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required>
-    </div>
-    <div>
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <div>
-        <button type="submit">Register</button>
-    </div>
-</form>
-<a href="/login">Login</a>
+<div class="container">
+    <form action="/register" method="POST" class="form">
+        <h1 class="form__title">Create Account</h1>
+        <div class="form__input-group">
+            <input type="text" class="form__input" id="name" autofocus placeholder="Name" name="name" required>
+        </div>
+        <div class="form__input-group">
+            <input type="email" class="form__input" id="email" autofocus placeholder="Email" name="email" required>
+        </div>
+        <div class="form__input-group">
+            <input type="password" class="form__input" id="password" autofocus placeholder="Password" name="password" required>
+        </div>
+        <div>
+            <button class="form__button" type="submit">Register</button>
+        </div>
+    </form>
+</div>

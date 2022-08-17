@@ -15,7 +15,7 @@ initializePassport(
 
 const users = [];
 
-app.set('view-engine', 'ejs');
+app.set('view-engine', 'ejs')
 app.use(express.urlencoded({ extended: false }));
 app.use(flash())
 app.use(session({
@@ -26,6 +26,8 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(methodOverride('_method'))
+
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', checkAuthenticated, (req, res) => {
   res.render('index.ejs', { name: req.user.name });
@@ -64,7 +66,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
 app.delete('/logout', (req, res) => {
     req.logOut(function(err){
       if(err){
-         return next(err); 
+         return err; 
       }
       res.redirect('/login');
     })
