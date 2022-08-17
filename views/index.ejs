@@ -1,5 +1,28 @@
-<link href="/styles.css" rel="stylesheet" type="text/css">
-<h1>Hai <%= name %>! </h1>
-<form action="/logout?_method=DELETE" method="POST">
-    <button type="submit" class="form__button">Log out</button>
-</form>
+<link href="/main.css" rel="stylesheet" type="text/css" />
+<body>
+  <form action="/logout?_method=DELETE" method="POST">
+    <h2 id="new-task-h2">Welcome <%= name %>!</h2>
+    <button type="submit" class="logout-button">Logout</button>
+  </form>
+  <header>
+    <form id="new-task-form">
+      <input
+        type="text"
+        id="new-task-input"
+        placeholder="What are you planning to do? Enter here .."
+      />
+      <input type="submit" id="new-task-submit" value="Add task" />
+    </form>
+  </header>
+  <main>
+    <section class="task-list">
+      <h2>Tasks</h2>
+      <div id="tasks">
+        
+      </div>
+    </section>
+  </main>
+</body>
+<script>
+  alert("Hello");
+</script>
