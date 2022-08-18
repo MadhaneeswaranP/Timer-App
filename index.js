@@ -14,6 +14,10 @@ initializePassport(
 );
 
 const users = [];
+// const userTasks = {
+//   'name': '',
+//   'tasks': ['Hello', 'Hai']
+// }
 
 app.set('view-engine', 'ejs')
 app.use(express.urlencoded({ extended: false }));
@@ -56,6 +60,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
       email: req.body.email,
       password: hashedPassword,
     });
+    // userTasks.name = req.body.name
     res.redirect('/login');
   } catch {
     res.redirect('/register');
