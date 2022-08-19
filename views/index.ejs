@@ -22,6 +22,7 @@
   </header>
   <section id="myModal" class="modal">
     <div class="watch">
+      <div class="task-title"></div>
       <div class="time">00:00:00</div>
       <span class="close">&times;</span>
       <div class="controls">
@@ -101,8 +102,11 @@
     /* Popup Stop Watch */
     modal.style.display = "block";
 
+    const task_tile = document.querySelector(".watch .task-title")
+
     // Task name
     const task = input.value;
+    task_tile.innerHTML = task;
     const task_el = document.createElement("div");
     task_el.classList.add("task");
 
