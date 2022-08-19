@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title id="web-title">Timer Application</title>
+    <link rel="shortcut icon" type="image/png" href="/timer.png" />
+    <link href="/styles/main.css" rel="stylesheet" type="text/css" />
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <form action="/logout?_method=DELETE" method="POST">
+      <h2 id="new-task-h2">Welcome </h2>
+      <button type="submit" class="logout-button">Logout</button>
+    </form>
+    <header>
+      <form id="new-task-form">
+        <input
+          type="text"
+          id="new-task-input"
+          placeholder="What are you planning to do? Enter here .."
+          required
+        />
+        <input type="submit" id="new-task-submit" value="ADD TIMER" />
+      </form>
+    </header>
+    <section id="myModal" class="modal">
+      <div class="watch">
+        <div class="task-title"></div>
+        <div class="time">00:00:00</div>
+        <span class="close">&times;</span>
+        <div class="controls">
+          <button id="start">Start</button>
+          <button id="stop">Pause</button>
+          <button id="reset">Reset</button>
+        </div>
+      </div>
+    </section>
+    <main>
+      <section class="task-list">
+        <h2>Tasks</h2>
+        <div id="tasks"></div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require('express');
 const app = express();
 const bcrypt = require('bcrypt');
@@ -33,9 +34,15 @@ app.use(methodOverride('_method'))
 
 app.use(express.static(__dirname + '/public'));
 
+
 app.get('/', checkAuthenticated, (req, res) => {
-  res.render('index.ejs', { name: req.user.name });
+  res.sendFile(path.join(__dirname));
 });
+
+app.get('/userName', function (req, res) {
+  console.log(req.user.name)
+  res.send({ 'name': req.user.name });
+})
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('login.ejs');
@@ -60,7 +67,6 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
       email: req.body.email,
       password: hashedPassword,
     });
-    // userTasks.name = req.body.name
     res.redirect('/login');
   } catch {
     res.redirect('/register');

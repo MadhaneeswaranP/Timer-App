@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <head>
-  <title>Timer Application</title>
+  <title>Timer Application - <%= name %></title>
   <link rel="shortcut icon" type="image/png" href="/timer.png" />
   <link href="/main.css" rel="stylesheet" type="text/css" />
 </head>
@@ -17,7 +17,7 @@
         placeholder="What are you planning to do? Enter here .."
         required
       />
-      <input type="submit" id="new-task-submit" value="ADD TASK" />
+      <input type="submit" id="new-task-submit" value="ADD TIMER" />
     </form>
   </header>
   <section id="myModal" class="modal">
@@ -40,6 +40,7 @@
   </main>
 </body>
 <script>
+  const tasks = []
   /* Stop Watch functionalities below */
   let time_el = document.querySelector(".watch .time");
   const start_btn = document.getElementById("start");
@@ -105,7 +106,7 @@
     const task_tile = document.querySelector(".watch .task-title")
 
     // Task name
-    const task = input.value;
+    const task = input.value + '.';
     task_tile.innerHTML = task;
     const task_el = document.createElement("div");
     task_el.classList.add("task");
@@ -169,9 +170,12 @@
 
     window.onclick = function (event) {
       task_input_el.value = task + " Duration: " + time_el.innerHTML;
+      tasks.push({ 'task': task, 'time': time_el.innerHTML})
       if (event.target == modal) {
         modal.style.display = "none";
       }
     };
   });
-</script>
+
+  // setInterval(() => console.log(tasks), 1000)
+</script> -->
