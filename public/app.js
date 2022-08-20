@@ -1,60 +1,22 @@
+const user = {
+  'name' : "",
+  'tasks' : []
+}
+
 fetch("http://localhost:3000/userName")
   .then(function (response) {
     return response.json();
   })
   .then(function (data) {
+    user.name = data.name
     document.getElementById("web-title").innerText =
       "Timer Application - " + data.name;
     document.getElementById("new-task-h2").innerText = "Welcome " + data.name;
   })
   .catch(function (err) {
     console.warn("Something went wrong.", err);
+    window.location.replace("http://localhost:3000/login");
   });
-
-let time_el = document.querySelector(".watch .time");
-const start_btn = document.getElementById("start");
-const stop_btn = document.getElementById("stop");
-const reset_btn = document.getElementById("reset");
-
-let seconds = 0;
-let interval = null;
-
-// Event Listeners
-start_btn.addEventListener("click", start);
-stop_btn.addEventListener("click", stop);
-reset_btn.addEventListener("click", reset);
-
-// Update Timer
-function timer() {
-  seconds++;
-
-  let hrs = Math.floor(seconds / 3600);
-  let mins = Math.floor((seconds - hrs * 3600) / 60);
-  let secs = seconds % 60;
-
-  if (secs < 10) secs = "0" + secs;
-  if (mins < 10) mins = "0" + mins;
-  if (hrs < 10) hrs = "0" + hrs;
-
-  time_el.innerText = `${hrs}:${mins}:${secs}`;
-}
-
-function start() {
-  if (interval) return;
-
-  interval = setInterval(timer, 1000);
-}
-
-function stop() {
-  clearInterval(interval);
-  interval = null;
-}
-
-function reset() {
-  stop();
-  seconds = 0;
-  time_el.innerText = "00:00:00";
-}
 
 const form = document.querySelector("#new-task-form");
 const input = document.querySelector("#new-task-input");
@@ -65,9 +27,9 @@ form.addEventListener("submit", (e) => {
 
   const modal = document.getElementById("myModal");
   const span = document.getElementsByClassName("close")[0];
-//   const btn = document.getElementById("new-task-submit");
 
-  reset();
+  stopWatch();
+  stopWatch.reset();
 
   /* Popup Stop Watch */
   modal.style.display = "block";
@@ -127,9 +89,9 @@ form.addEventListener("submit", (e) => {
     // console.log('On Edit', task_input_el.value.split('Duration: ')[1])
   });
 
-  time_el.innerHTML = "00:00:00";
 
   span.onclick = function () {
+    stopWatch(0)
     modal.style.display = "none";
   };
 
@@ -137,11 +99,86 @@ form.addEventListener("submit", (e) => {
     list_el.removeChild(task_el);
   });
 
+  
+  user.tasks.push({'task': task, 'time': stopWatch()})
+
   window.onclick = function (event) {
-    task_input_el.value = task + " Duration: " + time_el.innerHTML;
-    // tasks.push({ task: task, time: time_el.innerHTML });
+    task_input_el.value = task + " Duration: " + stopWatch();
     if (event.target == modal) {
+      stopWatch(0)
       modal.style.display = "none";
     }
   };
 });
+
+const stopWatch = (sec) => {
+  let time_el = document.querySelector(".watch .time");
+  const start_btn = document.getElementById("start");
+  const stop_btn = document.getElementById("stop");
+  const reset_btn = document.getElementById("reset");
+
+  let seconds = sec ? sec : 0;
+  let interval = null;
+
+  console.log('Inside StopWatch', 'Seconds: ' + sec, 'Time: '+ time_el.innerText)
+  if (sec == 0) {
+    return '00:00:00'
+  }
+
+  if (sec) {
+    let hrs = Math.floor(seconds / 3600);
+    let mins = Math.floor((seconds - hrs * 3600) / 60);
+    let secs = seconds % 60;
+
+    if (secs < 10) secs = "0" + secs;
+    if (mins < 10) mins = "0" + mins;
+    if (hrs < 10) hrs = "0" + hrs;
+
+    time_el.innerText = `${hrs}:${mins}:${secs}`;
+  }
+
+  // Event Listeners
+  start_btn.addEventListener("click", start);
+  stop_btn.addEventListener("click", stop);
+  reset_btn.addEventListener("click", reset);
+
+  // Update Timer
+  function timer() {
+    seconds++;
+
+    let hrs = Math.floor(seconds / 3600);
+    let mins = Math.floor((seconds - hrs * 3600) / 60);
+    let secs = seconds % 60;
+
+    if (secs < 10) secs = "0" + secs;
+    if (mins < 10) mins = "0" + mins;
+    if (hrs < 10) hrs = "0" + hrs;
+
+    time_el.innerText = `${hrs}:${mins}:${secs}`;
+  }
+
+  function start() {
+    if (interval) return;
+
+    interval = setInterval(timer, 1000);
+  }
+
+  function stop() {
+    clearInterval(interval);
+    interval = null;
+  }
+
+  function reset() {
+    stop();
+    seconds = 0;
+    time_el.innerText = "00:00:00";
+  }
+
+  stopWatch.start = start;
+  stopWatch.stop = stop;
+  stopWatch.reset = reset;
+
+  return time_el.innerText
+};
+
+// setInterval(() => console.log(user), 10000)

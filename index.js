@@ -15,10 +15,7 @@ initializePassport(
 );
 
 const users = [];
-// const userTasks = {
-//   'name': '',
-//   'tasks': ['Hello', 'Hai']
-// }
+const userTasks = []
 
 app.set('view-engine', 'ejs')
 app.use(express.urlencoded({ extended: false }));
@@ -34,13 +31,12 @@ app.use(methodOverride('_method'))
 
 app.use(express.static(__dirname + '/public'));
 
-
 app.get('/', checkAuthenticated, (req, res) => {
   res.sendFile(path.join(__dirname));
 });
 
-app.get('/userName', function (req, res) {
-  console.log(req.user.name)
+app.get('/userName', checkAuthenticated, function (req, res) {
+  userTasks.push({ 'name': req.user.name })
   res.send({ 'name': req.user.name });
 })
 
@@ -96,5 +92,6 @@ function checkNotAuthenticated(req, res, next) {
     }
     next()
 }
+
 
 app.listen(3000);
