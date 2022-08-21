@@ -3,6 +3,10 @@ const user = {
   tasks: [],
 };
 
+const form = document.querySelector("#new-task-form");
+const input = document.querySelector("#new-task-input");
+const list_el = document.querySelector("#tasks");
+
 fetch("http://localhost:3000/userName")
   .then(function (response) {
     return response.json();
@@ -12,16 +16,30 @@ fetch("http://localhost:3000/userName")
     document.getElementById("web-title").innerText =
       "Timer Application - " + data.name;
     document.getElementById("new-task-h2").innerText = "Welcome " + data.name;
-    console.log('Details', data)
+    if (data.tasks.length > 0) {
+      user.tasks = [...data.tasks];
+    }
+    if (user.tasks.length > 0) {
+      console.log('Details: ', user)
+      for (let i = 0; i < user.tasks.length; i++) {
+        list_el.innerHTML +=
+        `<div class="task">
+          <div class="content">
+            <input class="text" type="text" readonly="readonly"
+          >${user.tasks[i]}</div>
+            <div class="actions">
+              <button class="edit">Edit</button>
+              <button class="delete">Delete</button>
+            </div>
+          </div>`
+      }
+    }
   })
   .catch(function (err) {
     console.warn("Something went wrong.", err);
     window.location.replace("http://localhost:3000/login");
   });
 
-const form = document.querySelector("#new-task-form");
-const input = document.querySelector("#new-task-input");
-const list_el = document.querySelector("#tasks");
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -97,7 +115,7 @@ form.addEventListener("submit", (e) => {
 
   span.onclick = function () {
     task_input_el.value = task + " Duration: " + stopWatch();
-    user.tasks.push(task + ' ' + task_input_el.value.split('Duration: ')[1]);
+    user.tasks.push(task + " " + task_input_el.value.split("Duration: ")[1]);
     modal.style.display = "none";
   };
 
