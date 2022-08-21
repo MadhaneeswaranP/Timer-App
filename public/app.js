@@ -1,17 +1,18 @@
 const user = {
-  'name' : "",
-  'tasks' : []
-}
+  name: "",
+  tasks: [],
+};
 
 fetch("http://localhost:3000/userName")
   .then(function (response) {
     return response.json();
   })
   .then(function (data) {
-    user.name = data.name
+    user.name = data.name;
     document.getElementById("web-title").innerText =
       "Timer Application - " + data.name;
     document.getElementById("new-task-h2").innerText = "Welcome " + data.name;
+    console.log('Details', data)
   })
   .catch(function (err) {
     console.warn("Something went wrong.", err);
@@ -28,15 +29,15 @@ form.addEventListener("submit", (e) => {
   const modal = document.getElementById("myModal");
   const span = document.getElementsByClassName("close")[0];
 
+  const task_title = document.querySelector(".watch .task-title");
+
   stopWatch();
   stopWatch.reset();
 
   /* Popup Stop Watch */
   modal.style.display = "block";
 
-  const task_title = document.querySelector(".watch .task-title");
-
-  // Task name
+  /* Task name */
   const task = input.value + ".";
   task_title.innerHTML = task;
   const task_el = document.createElement("div");
@@ -76,56 +77,58 @@ form.addEventListener("submit", (e) => {
   input.value = "";
 
   task_edit_el.addEventListener("click", (e) => {
-    if (task_edit_el.innerText.toLowerCase() == "edit") {
-      task_edit_el.innerText = "Save";
-      task_input_el.removeAttribute("readonly");
-      task_input_el.focus();
-    } else {
-      task_edit_el.innerText = "Edit";
-      task_input_el.setAttribute("readonly", "readonly");
-    }
-    // modal.style.display = "block";
-    // time_el.innerHTML = task_input_el.value.split('Duration: ')[1]
-    // console.log('On Edit', task_input_el.value.split('Duration: ')[1])
+    // if (task_edit_el.innerText.toLowerCase() == "edit") {
+    //   task_edit_el.innerText = "Save";
+    //   task_input_el.removeAttribute("readonly");
+    //   task_input_el.focus();
+    // } else {
+    //   task_edit_el.innerText = "Edit";
+    //   task_input_el.setAttribute("readonly", "readonly");
+    // }
+    let time = task_input_el.value.split("Duration: ")[1];
+    let time_to_hrs = +time.split(":")[0] * 3600;
+    let time_to_mins = +time.split(":")[1] * 60;
+    let time_to_sec = +time.split(":")[2];
+    modal.style.display = "block";
+    task_title.innerHTML = task_input_el.value.split("Duration: ")[0];
+    stopWatch(time_to_hrs + time_to_mins + time_to_sec);
+    console.log("On Edit", task, task_input_el.value.split("Duration: ")[1]);
   });
 
-
   span.onclick = function () {
-    stopWatch(0)
+    task_input_el.value = task + " Duration: " + stopWatch();
+    user.tasks.push(task + ' ' + task_input_el.value.split('Duration: ')[1]);
     modal.style.display = "none";
   };
 
   task_delete_el.addEventListener("click", (e) => {
     list_el.removeChild(task_el);
   });
-
-  
-  user.tasks.push({'task': task, 'time': stopWatch()})
-
-  window.onclick = function (event) {
-    task_input_el.value = task + " Duration: " + stopWatch();
-    if (event.target == modal) {
-      stopWatch(0)
-      modal.style.display = "none";
-    }
-  };
 });
 
 const stopWatch = (sec) => {
+  let given_sec = sec;
   let time_el = document.querySelector(".watch .time");
   const start_btn = document.getElementById("start");
   const stop_btn = document.getElementById("stop");
   const reset_btn = document.getElementById("reset");
 
-  let seconds = sec ? sec : 0;
+  let seconds = given_sec ? given_sec : 0;
   let interval = null;
 
-  console.log('Inside StopWatch', 'Seconds: ' + sec, 'Time: '+ time_el.innerText)
-  if (sec == 0) {
-    return '00:00:00'
-  }
+  console.log(
+    "Inside StopWatch",
+    "Seconds: " + seconds,
+    "time: ",
+    time_el.innerText
+  );
 
-  if (sec) {
+  // if (!given_sec) {
+  //   time_el.innerText = `00:00:00`
+  //   return
+  // }
+
+  if (seconds !== 0) {
     let hrs = Math.floor(seconds / 3600);
     let mins = Math.floor((seconds - hrs * 3600) / 60);
     let secs = seconds % 60;
@@ -136,6 +139,10 @@ const stopWatch = (sec) => {
 
     time_el.innerText = `${hrs}:${mins}:${secs}`;
   }
+
+  // if (task_input && task_title) {
+  //   task_input.value = task_title + " Duration: " + time_el.innerText;
+  // }
 
   // Event Listeners
   start_btn.addEventListener("click", start);
@@ -178,7 +185,21 @@ const stopWatch = (sec) => {
   stopWatch.stop = stop;
   stopWatch.reset = reset;
 
-  return time_el.innerText
+  if (!given_sec) {
+    return time_el.innerText;
+  }
 };
 
-// setInterval(() => console.log(user), 10000)
+const logout_btn = document.getElementById("logout");
+
+logout_btn.addEventListener("click", () => {
+  fetch(`http://localhost:3000/${user.name}/tasks`, {
+    method: "POST",
+    body: JSON.stringify(user),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  })
+    .then((response) => response.json())
+    .then((json) => console.log(json));
+});

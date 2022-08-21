@@ -6,6 +6,12 @@ const passport = require('passport');
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
+const bodyParser = require("body-parser");
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json());
 
 const initializePassport = require('./passport-config');
 initializePassport(
@@ -15,7 +21,7 @@ initializePassport(
 );
 
 const users = [];
-const userTasks = []
+const userTasks = {}
 
 app.set('view-engine', 'ejs')
 app.use(express.urlencoded({ extended: false }));
@@ -36,8 +42,22 @@ app.get('/', checkAuthenticated, (req, res) => {
 });
 
 app.get('/userName', checkAuthenticated, function (req, res) {
-  userTasks.push({ 'name': req.user.name })
-  res.send({ 'name': req.user.name });
+  if (userTasks[req.user.name]) {
+    res.send({ 'name': req.user.name, 'tasks': userTasks[req.user.name] });
+  } else {
+    userTasks[req.user.name] = []
+    res.send({ 'name': req.user.name })
+  }
+})
+
+app.post('/:user/tasks', function (req, res) {
+  if (userTasks[req.params.user]) {
+    if (req.body.tasks.length > 0) {
+      userTasks[req.params.user].push(req.body.tasks)
+    }
+  } else {
+    userTasks[req.params.user] = null
+  }
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
