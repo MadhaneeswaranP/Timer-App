@@ -3,6 +3,8 @@ const user = {
   tasks: [],
 };
 
+let render_tasks = [];
+
 const form = document.querySelector("#new-task-form");
 const input = document.querySelector("#new-task-input");
 const list_el = document.querySelector("#tasks");
@@ -16,22 +18,100 @@ fetch("http://localhost:3000/userName")
     document.getElementById("web-title").innerText =
       "Timer Application - " + data.name;
     document.getElementById("new-task-h2").innerText = "Welcome " + data.name;
-    if (data.tasks.length > 0) {
-      user.tasks = [...data.tasks];
+    if (data.tasks.length > 1) {
+      for (let i in data.tasks) {
+        user.tasks.push(data.tasks[i]);
+      }
+    } else if (data.tasks.length === 1) {
+      user.tasks.push(data.tasks[0]);
     }
     if (user.tasks.length > 0) {
-      console.log('Details: ', user)
+      for (let i in user.tasks) {
+        for (let j in user.tasks[i]) {
+          render_tasks.push(user.tasks[i][j]);
+        }
+      }
+      user.tasks = [...new Set(render_tasks)];
       for (let i = 0; i < user.tasks.length; i++) {
-        list_el.innerHTML +=
-        `<div class="task">
-          <div class="content">
-            <input class="text" type="text" readonly="readonly"
-          >${user.tasks[i]}</div>
-            <div class="actions">
-              <button class="edit">Edit</button>
-              <button class="delete">Delete</button>
-            </div>
-          </div>`
+        const modal = document.getElementById("myModal");
+        const span = document.getElementsByClassName("close")[0];
+
+        const task_title = document.querySelector(".watch .task-title");
+
+        /* Task */
+        const task = user.tasks[i];
+        task_title.innerHTML = task;
+        const task_el = document.createElement("div");
+        task_el.classList.add("task");
+
+        const task_content_el = document.createElement("div");
+        task_content_el.classList.add("content");
+
+        task_el.appendChild(task_content_el);
+
+        let task_input_el = document.createElement("input");
+        task_input_el.classList.add("text");
+        task_input_el.type = "text";
+        task_input_el.value = task;
+        task_input_el.setAttribute("readonly", "readonly");
+
+        task_content_el.appendChild(task_input_el);
+
+        const task_actions_el = document.createElement("div");
+        task_actions_el.classList.add("actions");
+
+        const task_edit_el = document.createElement("button");
+        task_edit_el.classList.add("edit");
+        task_edit_el.innerText = "Edit";
+
+        const task_delete_el = document.createElement("button");
+        task_delete_el.classList.add("delete");
+        task_delete_el.innerText = "Delete";
+
+        task_actions_el.appendChild(task_edit_el);
+        task_actions_el.appendChild(task_delete_el);
+
+        task_el.appendChild(task_actions_el);
+
+        list_el.appendChild(task_el);
+
+        input.value = "";
+
+        task_edit_el.addEventListener("click", (e) => {
+          // if (task_edit_el.innerText.toLowerCase() == "edit") {
+          //   task_edit_el.innerText = "Save";
+          //   task_input_el.removeAttribute("readonly");
+          //   task_input_el.focus();
+          // } else {
+          //   task_edit_el.innerText = "Edit";
+          //   task_input_el.setAttribute("readonly", "readonly");
+          // }
+          let time = task_input_el.value.split(". ")[1];
+          let time_to_hrs = +time.split(":")[0] * 3600;
+          let time_to_mins = +time.split(":")[1] * 60;
+          let time_to_sec = +time.split(":")[2];
+          modal.style.display = "block";
+          task_title.innerHTML = task_input_el.value.split(". ")[0];
+          stopWatch(time_to_hrs + time_to_mins + time_to_sec);
+          console.log("On Edit", task, task_input_el.value.split(". ")[1]);
+        });
+
+        span.onclick = function () {
+          task_input_el.value =
+            task.split(". ")[0] + " Duration: " + stopWatch();
+          user.tasks.push(
+            task.split(". ")[0] +
+              ". " +
+              task_input_el.value.split("Duration: ")[1]
+          );
+          modal.style.display = "none";
+        };
+
+        task_delete_el.addEventListener("click", (e) => {
+          list_el.removeChild(task_el);
+          let index = user.tasks.indexOf(user.tasks[i]);
+          user.tasks.splice(index, 1);
+        });
       }
     }
   })
@@ -39,7 +119,6 @@ fetch("http://localhost:3000/userName")
     console.warn("Something went wrong.", err);
     window.location.replace("http://localhost:3000/login");
   });
-
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -121,6 +200,8 @@ form.addEventListener("submit", (e) => {
 
   task_delete_el.addEventListener("click", (e) => {
     list_el.removeChild(task_el);
+    let index = user.tasks.indexOf(task_input_el.value);
+    user.tasks.splice(index, 1);
   });
 });
 
