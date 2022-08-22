@@ -38,7 +38,7 @@ fetch("http://localhost:3000/userName")
 
         const task_title = document.querySelector(".watch .task-title");
 
-        /* Task */
+        /* Task input text field & buttons */
         const task = user.tasks[i];
         task_title.innerHTML = task;
         const task_el = document.createElement("div");
@@ -194,13 +194,14 @@ form.addEventListener("submit", (e) => {
     let time_to_sec = +time.split(":")[2];
     modal.style.display = "block";
     task_title.innerHTML = task_input_el.value.split("Duration: ")[0];
-    stopWatch(time_to_hrs + time_to_mins + time_to_sec);
-    console.log("On Edit", task, task_input_el.value.split("Duration: ")[1]);
+    stopWatch(time_to_hrs + time_to_mins + time_to_sec)
+    console.log("On Edit");
   });
 
   span.onclick = function () {
     task_input_el.value = task + " Duration: " + stopWatch();
-    user.tasks.push(task + " " + task_input_el.value.split("Duration: ")[1]);
+    console.log('Span close, Task:', task)
+    user.tasks.push(task_input_el.value);
     modal.style.display = "none";
   };
 
@@ -234,11 +235,6 @@ const stopWatch = (sec) => {
     time_el.innerText
   );
 
-  // if (!given_sec) {
-  //   time_el.innerText = `00:00:00`
-  //   return
-  // }
-
   if (seconds !== 0) {
     let hrs = Math.floor(seconds / 3600);
     let mins = Math.floor((seconds - hrs * 3600) / 60);
@@ -250,10 +246,6 @@ const stopWatch = (sec) => {
 
     time_el.innerText = `${hrs}:${mins}:${secs}`;
   }
-
-  // if (task_input && task_title) {
-  //   task_input.value = task_title + " Duration: " + time_el.innerText;
-  // }
 
   // Event Listeners
   start_btn.addEventListener("click", start);
@@ -296,9 +288,7 @@ const stopWatch = (sec) => {
   stopWatch.stop = stop;
   stopWatch.reset = reset;
 
-  if (!given_sec) {
     return time_el.innerText;
-  }
 };
 
 const logout_btn = document.getElementById("logout");
