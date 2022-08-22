@@ -60,6 +60,12 @@ app.post('/:user/tasks', function (req, res) {
   }
 })
 
+app.delete('/:task/delete-task', function (req, res) {
+  let index = userTasks[req.user.name].indexOf(req.body)
+  userTasks[req.user.name].splice(index, 1)
+  console.log(userTasks)
+})
+
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('login.ejs');
 });

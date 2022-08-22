@@ -111,6 +111,12 @@ fetch("http://localhost:3000/userName")
           list_el.removeChild(task_el);
           let index = user.tasks.indexOf(user.tasks[i]);
           user.tasks.splice(index, 1);
+          // Delete user.tasks[i]
+          fetch(`http://localhost:3000/${user.tasks[i]}/delete-task`, {
+            method: "DELETE",
+            body: user.tasks[i],
+          }).then((response) => console.log(response.json()));
+          console.log("In user history after deleting", user.tasks);
         });
       }
     }
@@ -202,6 +208,12 @@ form.addEventListener("submit", (e) => {
     list_el.removeChild(task_el);
     let index = user.tasks.indexOf(task_input_el.value);
     user.tasks.splice(index, 1);
+    // Delete task_input_el.value
+    fetch(`http://localhost:3000/${task_input_el.value}/delete-task`, {
+      method: "DELETE",
+      body: task_input_el.value,
+    }).then((response) => console.log(response.json()));
+    console.log("Form after deleting", user.tasks);
   });
 });
 
