@@ -47,7 +47,8 @@ header h1 {
     display: flex;
 }
 
-input, button {
+input,
+button {
     appearance: none;
     border: none;
     outline: none;
@@ -223,7 +224,7 @@ main {
     margin: 0 0.5rem;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
-    
+
     transition: 0.4s;
 }
 
@@ -237,16 +238,16 @@ main {
 
 /* Modal stylings */
 .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1; 
+    display: none;
+    position: fixed;
+    z-index: 1;
     padding-top: 100px;
     left: 0;
     top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgba(0,0,0,0.4); 
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .close {
@@ -257,14 +258,120 @@ main {
     margin-right: -25px;
     margin-top: -137px;
 }
-  
+
 .close:hover,
 .close:focus {
-color: #000;
-text-decoration: none;
-cursor: pointer;
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 
 
+.taskTitle {
+    margin: 30px 0px;
+    font-weight: bold;
+}
 
+h1 {
+    color: #ffffff;
+
+    font-weight: 800;
+}
+
+#addTaskBtn {
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    color: #ebb3ce;
+    background-color: #02798f;
+    transition: all 0.75s ease;
+    -webkit-transition: all 0.75s ease;
+    -moz-transition: all 0.75s ease;
+    -ms-transition: all 0.75s ease;
+    -o-transition: all 0.75 ease;
+    font-weight: bold;
+}
+
+#addTaskBtn:hover {
+    background-color: #02798f;
+    color: #ffcd5d;
+}
+
+ul {
+    text-align: left;
+}
+
+li {
+    list-style: none;
+    padding: 10px 20px;
+    color: #ffffff;
+    text-transform: capitalize;
+    font-weight: 600;
+    border: 2px solid #025f70;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background: #4eb9cd;
+    transition: all 0.75s ease;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5 ease;
+}
+
+li:hover {
+    background: #76cfe0;
+}
+
+li>button {
+    font-weight: normal;
+    background: none;
+    border: none;
+    float: right;
+    color: #025f70;
+    font-weight: 800;
+}
+
+input {
+    border-radius: 5px;
+    /* min-width: 65%; */
+    padding: 5px;
+    border: none;
+}
+
+.done {
+    background: #a6c143 !important;
+    color: #025f70;
+}
+
+.started {
+    background: #56c596 !important;
+    color: #025f70;
+}
+
+.paused {
+    background: #ff503c !important;
+    color: #025f70;
+}
+
+.delete {
+    display: none;
+}
+
+.timerDisplay {
+    font-weight: normal;
+    background: none;
+    border: none;
+    float: right;
+    color: #025f70;
+    font-weight: 800;
+    padding-right: "20px";
+}
+
+.fa {
+    font: normal normal normal 20px/1 FontAwesome;
+}
+
+.fa:hover {
+    cursor: pointer;
+}

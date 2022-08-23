@@ -3,15 +3,19 @@
   <head>
     <title id="web-title">Timer Application</title>
     <link rel="shortcut icon" type="image/png" href="/favicon-timer.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <link href="/styles/main.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
     <form action="/logout?_method=DELETE" method="POST">
-      <h2 id="new-task-h2">Welcome </h2>
+      <h2 id="new-task-h2">Welcome</h2>
       <button type="submit" id="logout" class="logout-button">Logout</button>
     </form>
     <header>
-      <form id="new-task-form">
+      <div style="display: flex">
         <input
           type="text"
           id="new-task-input"
@@ -19,24 +23,13 @@
           required
         />
         <input type="submit" id="new-task-submit" value="ADD TIMER" />
-      </form>
-    </header>
-    <section id="myModal" class="modal">
-      <div class="watch">
-        <div class="task-title"></div>
-        <div class="time">00:00:00</div>
-        <span class="close">&times;</span>
-        <div class="controls">
-          <button id="start">Start</button>
-          <button id="stop">Pause</button>
-          <button id="reset">Reset</button>
-        </div>
       </div>
-    </section>
+    </header>
     <main>
       <section class="task-list">
-        <h2>Tasks</h2>
-        <div id="tasks"></div>
+        <div id="tasks" style="margin-left: -2.7rem">
+          <ul class="col-12"></ul>
+        </div>
       </section>
     </main>
     <script type="module" src="app.js"></script>
