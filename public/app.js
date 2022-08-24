@@ -5,7 +5,9 @@ const user = {
 
 let render_tasks = [];
 
-fetch("http://localhost:3000/userName")
+const hostname = window.location.href
+
+fetch(`${hostname}userName`)
   .then(function (response) {
     return response.json();
   })
@@ -44,7 +46,7 @@ fetch("http://localhost:3000/userName")
         li.appendChild(timerSpan);
 
         function deleteListItem() {
-          fetch(`http://localhost:3000/${user.name}/delete-task`, {
+          fetch(`${hostname}${user.name}/delete-task`, {
             method: "POST",
             headers: {
               Accept: "application/json",
@@ -69,7 +71,7 @@ fetch("http://localhost:3000/userName")
   })
   .catch(function (err) {
     console.warn("Something went wrong.", err);
-    window.location.replace("http://localhost:3000/login");
+    window.location.replace(`${hostname}login`);
   });
 
 var enter_btn = document.getElementById("new-task-submit");
@@ -169,7 +171,7 @@ function createTaskPanel() {
       user.tasks.push(li.innerText.split("\n").join(" Time: "));
 
       setTimeout(() => {
-        fetch(`http://localhost:3000/${user.name}/add-task`, {
+        fetch(`${hostname}${user.name}/add-task`, {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -215,7 +217,7 @@ function createTaskPanel() {
   }
 
   function deleteListItem() {
-    fetch(`http://localhost:3000/${user.name}/delete-task`, {
+    fetch(`${hostname}${user.name}/delete-task`, {
       method: "POST",
       headers: {
         Accept: "application/json",

@@ -1,32 +1,62 @@
-<link href="/styles/form-styles.css" rel="stylesheet" type="text/css">
+<link href="/styles/form-styles.css" rel="stylesheet" type="text/css" />
 <head>
-    <title>Timer Application</title>
-    <link
-      rel="shortcut icon"
-      type="image/png"
-      href="/favicon-timer.png"
-    />
+  <title>Timer Application</title>
+  <link rel="shortcut icon" type="image/png" href="/favicon-timer.png" />
 </head>
-
 <div class="container">
-    <form action="/login" method="POST" class="form">
-        <h1 class="form__title">Login</h1>
-        <div class="form__message form__message--error">
-            <% if (messages.error) { %>
-                <%= messages.error %>
-            <% } %>
-        </div>
-        <div class="form__input-group">
-            <input type="email" class="form__input" id="email" autofocus placeholder="Email" name="email" required>
-        </div>
-        <div class="form__input-group">
-            <input type="password" class="form__input" id="password" autofocus placeholder="Password" name="password" required>
-        </div>
-        <div>
-            <button class="form__button" type="submit">Login</button>
-        </div>
-    </form>
-    <p class="form__text">
-        <a href="/register" class="form__link">Don't have an account? Sign up</a>
-    </p>
+  <form action="/login" method="POST" class="form">
+    <h1 class="form__title">Login</h1>
+    <!-- <div class="form__message form__message--error">
+      <% if (messages.error) { %> <%= messages.error %> <% } %>
+    </div> -->
+    <div class="form__input-group">
+      <input
+        type="email"
+        class="form__input"
+        id="email"
+        autofocus
+        placeholder="Email"
+        name="email"
+        required
+      />
+        <% if (messages.error == 'Invalid email!')  { %> 
+            <span id="span_email" style="color: red; padding: 5px">
+                Invalid email! 
+            </span>
+        <% } %>
+    </div>
+    <div class="form__input-group">
+      <input
+        type="password"
+        class="form__input"
+        id="password"
+        autofocus
+        placeholder="Password"
+        name="password"
+        required
+        onfocus="document.getElementById('span_password').style.display='none';"
+      />
+      <% if (messages.error == 'Incorrect password') { %>
+        <span id="span_password" style="color: red; padding: 5px">
+            Incorrect password
+        </span>
+      <% } %>
+    </div>
+    <div>
+      <button class="form__button" type="submit">Login</button>
+    </div>
+  </form>
+  <p class="form__text">
+    <a href="/register" class="form__link">Don't have an account? Sign up</a>
+  </p>
 </div>
+
+<script>
+    const email = document.querySelector("#email");
+    const spanEmail = document.querySelector("#span_email");
+    document.onclick = (e) => {
+    if (e.target == email) {
+        spanEmail.style.display = "none";
+    }
+    };
+</script>
