@@ -5,7 +5,7 @@ const user = {
 
 let render_tasks = [];
 
-const hostname = window.location.href
+const hostname = window.location.href;
 
 fetch(`${hostname}userName`)
   .then(function (response) {
@@ -70,16 +70,15 @@ fetch(`${hostname}userName`)
     }
   })
   .catch(function (err) {
-    console.warn("Something went wrong.", err);
     window.location.replace(`${hostname}login`);
   });
 
-var enter_btn = document.getElementById("new-task-submit");
-enter_btn.addEventListener("click", createTaskPanel);
+var enter_btn = document.getElementById("form");
 var input = document.getElementById("new-task-input");
 var ul = document.querySelector("ul");
 
-function createTaskPanel() {
+enter_btn.addEventListener("submit", (e) => {
+  e.preventDefault();
   var time = 0;
   var running = 0;
 
@@ -108,7 +107,7 @@ function createTaskPanel() {
   // Start button
   var startBtn = document.createElement("button");
   startBtn.innerHTML =
-    "<span><i class='fa fa-play-circle' v-b-tooltip.hover title='Start'></i></span>";
+    "<span><i class='fa fa-play-circle' v-b-tooltip.hover title='Resume'></i></span>";
   startBtn.setAttribute("id", "startBtn");
   li.appendChild(startBtn);
   startBtn.addEventListener("click", startTimer);
@@ -123,11 +122,12 @@ function createTaskPanel() {
 
   var stopBtn = document.createElement("button");
   stopBtn.innerHTML =
-    "<span><i class='fa fa-check-circle' v-b-tooltip.hover title='Stop'></i></span>";
+    "<span><i class='fa fa-check-circle' v-b-tooltip.hover title='Save'></i></span>";
   stopBtn.setAttribute("id", "stopBtn");
 
   li.appendChild(stopBtn);
   stopBtn.addEventListener("click", stopTimer);
+  startTimer()
 
   function pauseTimer() {
     li.classList.add("paused");
@@ -223,7 +223,9 @@ function createTaskPanel() {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ task: li.innerText.split("\n").join(" Time: ") }),
+      body: JSON.stringify({
+        task: li.innerText.split("\n").join(" Time: "),
+      }),
     })
       .then((response) => console.log(response.json()))
       .then((json) => console.log(json))
@@ -235,4 +237,4 @@ function createTaskPanel() {
     user.tasks.splice(index, 1);
     li.classList.add("delete");
   }
-}
+});

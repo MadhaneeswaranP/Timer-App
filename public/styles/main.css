@@ -30,10 +30,11 @@ body {
 }
 
 header {
-    padding: 2rem 1rem;
+    padding: 1rem 1rem;
     max-width: 800px;
     width: 100%;
     margin: 0 auto;
+    padding-top: 3rem;
 }
 
 header h1 {
